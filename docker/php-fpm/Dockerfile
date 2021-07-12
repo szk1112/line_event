@@ -4,7 +4,7 @@ RUN apk upgrade --update \
     && apk --no-cache add icu-dev autoconf make g++ gcc curl libzip-dev
 
 RUN docker-php-ext-configure opcache --enable-opcache \
-    && docker-php-ext-install pdo_mysql zip opcache
+    && docker-php-ext-install pdo_mysql zip opcache sockets
 
 # composer
 RUN curl -sS https://getcomposer.org/installer | php \
