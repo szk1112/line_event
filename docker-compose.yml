@@ -1,0 +1,46 @@
+version: "3.8"
+services:
+  nginx:
+    build:
+      context: .
+      dockerfile: ./docker/nginx/Dockerfile
+    ports:
+      - "8000:80"
+    volumes:
+      - ./public:/var/www/html:cached
+    depends_on:
+      - php-fpm
+    container_name: nginx
+
+  php-fpm:
+    build:
+      context: .
+      dockerfile: ./docker/php-fpm/Dockerfile
+    environment:
+      DB_CONNECTION: mysql
+      DB_HOST: db
+      DB_PORT: 3306
+      DB_DATABASE: example_db
+      DB_USERNAME: root
+      DB_PASSWORD: password
+      APP_DEBUG: "true"
+    ports:
+      - "9000:9000"
+    volumes:
+      - ./:/var/www/html:cached
+      - ./docker/php-fpm/conf.d/local.ini:/usr/local/etc/php/conf.d/override.ini:ro
+    depends_on:
+      - db
+    container_name: php-fpm
+
+  db:
+    image: mysql:8.0
+    command: --default-authentication-plugin=mysql_native_password
+    environment:
+      MYSQL_ROOT_PASSWORD: password
+      MYSQL_DATABASE: example_db
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./docker/db/data:/var/lib/mysql
+    container_name: db
