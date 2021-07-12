@@ -229,5 +229,10 @@ return [
         'View' => Illuminate\Support\Facades\View::class,
 
     ],
-
+    'const' => [
+        'Line'       => [
+            'LINE_BOT_CHANNEL_SECRET'       => env('LINE_BOT_CHANNEL_SECRET'),
+            'LINE_BOT_CHANNEL_ACCESS_TOKEN' => env('LINE_BOT_CHANNEL_ACCESS_TOKEN'),
+        ],
+    ],
 ];

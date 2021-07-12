@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use LINE\LINEBot;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,6 +24,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        //
+        $this->app->bind(LINEBot::class, function () {
+            return new LINEBot(
+                new LINEBot\HTTPClient\CurlHTTPClient(config('app.const.Line.LINE_BOT_CHANNEL_ACCESS_TOKEN')),
+                ['channelSecret' => config('app.const.Line.LINE_BOT_CHANNEL_SECRET')]
+            );
+        });
     }
 }
