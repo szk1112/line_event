@@ -36,7 +36,7 @@ class LineBotController extends BaseController
             switch (true) {
                 case $event instanceof LINEBot\Event\MessageEvent\TextMessage:
                     // メッセージの受信
-                    $this->message($event);
+                    \App\Events\TextMessageEvent::dispatch($event);
                     break;
                 case $event instanceof LINEBot\Event\FollowEvent:
                     // 友達登録＆ブロック解除
@@ -44,10 +44,8 @@ class LineBotController extends BaseController
                     // 位置情報の受信
                 case $event instanceof LINEBot\Event\UnfollowEvent:
                     // 友達解除
-                    break;
                 case $event instanceof LINEBot\Event\PostbackEvent:
                     // postback受信
-                    $this->execute($event);
                     break;
                 default:
                     $body = $event->getEventBody();

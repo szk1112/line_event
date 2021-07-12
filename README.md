@@ -30,3 +30,31 @@ docker-php-ext-install sockets
 ```
 docker-compose exec php-fpm sh -c "composer require linecorp/line-bot-sdk"
 ```
+
+## EVENT追加
+
+```
+#EVENT追加
+docker-compose exec php-fpm sh -c "php artisan make:event TextMessageEvent"
+
+#Listener追加
+docker-compose exec php-fpm sh -c "php artisan make:listener TextMessageListener --event=TextMessageEvent"
+```
+
+### EventServiceProviderに登録
+```
+    protected $listen = [
+        Registered::class => [
+            SendEmailVerificationNotification::class,
+        ],
+        TextMessageEvent::class => [
+            TextMessageListener::class,
+        ],
+    ];
+
+```
+
+### dispatchでEvent呼び出し
+```
+\App\Events\TextMessageEvent::dispatch($event);
+```
