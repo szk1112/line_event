@@ -45,42 +45,13 @@ class LineBotController extends BaseController
                 case $event instanceof LINEBot\Event\UnfollowEvent:
                     // 友達解除
                 case $event instanceof LINEBot\Event\PostbackEvent:
+                    // スタンプ
+                case $event instanceof LINEBot\Event\MessageEvent\StickerMessage:
                     // postback受信
-                    break;
                 default:
-                    $body = $event->getEventBody();
-                    \Log::warning('Unknown event. [' . get_class($event) . ']', compact('body'));
+                break;
             }
         }
-    }
-
-    /**
-     * @param PostbackEvent $event
-     *
-     * @throws \ReflectionException
-     */
-    private function execute(PostbackEvent $event)
-    {
-        $replyToken   = $event->getReplyToken();
-        $postbackData = $event->getPostbackData();
-        parse_str($postbackData, $postbackArray);
-        // postbackDataの中身を返却
-        $this->bot->replyText($replyToken, print_r($postbackArray, true));
-
-    }
-
-    /**
-     * @param TextMessage $event
-     *
-     * @throws \ReflectionException
-     */
-    private function message(TextMessage $event)
-    {
-        $replyToken = $event->getReplyToken();
-        // オウム返し
-        $text       = $event->getText();
-        $this->bot->replyText($replyToken, $text);
-
     }
 
 }
