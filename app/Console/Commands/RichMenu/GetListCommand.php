@@ -61,8 +61,8 @@ class GetListCommand extends Command
                                           'Authorization' => 'Bearer ' . config('app.const.Line.LINE_BOT_CHANNEL_ACCESS_TOKEN'),
                                       ])->get("https://api.line.me/v2/bot/richmenu/alias/list");
 
-        if (!$response->isSucceeded()) {
-            print_r($response->getRawBody() . "\n");
+        if (!$response->ok()) {
+            print_r($response->body() . "\n");
             return 0;
         }
 
