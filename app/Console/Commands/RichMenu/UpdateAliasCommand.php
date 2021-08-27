@@ -40,7 +40,7 @@ class UpdateAliasCommand extends Command
     public function handle(LINEBot $bot)
     {
         $response = Http::withHeaders([
-            'Authorization' => 'Bearer ' . config('app.const.Line.LINE_BOT_CHANNEL_ACCESS_TOKEN'),
+            'Authorization' => 'Bearer ' . env('LINE_BOT_CHANNEL_ACCESS_TOKEN'),
             'Content-Type'  => 'application/json'
         ])->post(
             "https://api.line.me/v2/bot/richmenu/alias/" . $this->argument('richMenuAliasId'),
