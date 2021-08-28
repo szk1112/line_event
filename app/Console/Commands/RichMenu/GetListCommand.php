@@ -58,7 +58,7 @@ class GetListCommand extends Command
         }
 
         $response = Http::withHeaders([
-                                          'Authorization' => 'Bearer ' . config('app.const.Line.LINE_BOT_CHANNEL_ACCESS_TOKEN'),
+                                          'Authorization' => 'Bearer ' . env('LINE_BOT_CHANNEL_ACCESS_TOKEN'),
                                       ])->get("https://api.line.me/v2/bot/richmenu/alias/list");
 
         if (!$response->ok()) {
