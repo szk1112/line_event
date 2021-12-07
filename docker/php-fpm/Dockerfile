@@ -1,3 +1,4 @@
+FROM node:16-alpine as node
 FROM php:7.4-fpm-alpine
 
 RUN apk upgrade --update \
@@ -31,3 +32,9 @@ RUN set -eux \
     && php artisan route:cache \
     && php artisan view:cache
 EXPOSE 9000
+# node command
+COPY --from=node /usr/local/bin /usr/local/bin
+# npm command
+COPY --from=node /usr/local/lib /usr/local/lib
+# yarn command
+COPY --from=node /opt /opt
