@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Auth\LineOAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,4 +16,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('home');
+// LINEの認証画面に遷移
+Route::get('auth/line', [LineOAuthController::class, 'redirectToProvider'])->name('line.login');
+
+Route::get('user/home', function () {
+    return view('user/home');
+})->name('user.home');
+
+// 認証後にリダイレクトされるURL(コールバックURL)
+Route::get('auth/line/callback', [LineOAuthController::class, 'handleProviderCallback']);
