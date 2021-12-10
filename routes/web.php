@@ -1,6 +1,9 @@
 <?php
 
 use App\Http\Controllers\Auth\LineOAuthController;
+use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\LineBot\LineBotLinkController;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -13,16 +16,28 @@ use Illuminate\Support\Facades\Route;
 | contains the "web" middleware group. Now create something great!
 |
 */
+Route::group(['middleware' => 'web'], function() {
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-// LINEの認証画面に遷移
-Route::get('auth/line', [LineOAuthController::class, 'redirectToProvider'])->name('line.login');
+    Route::get('/', function () {
+        return view('welcome');
+    })->name('home');
+    // LINEの認証画面に遷移
+    Route::get('auth/line', [LineOAuthController::class, 'redirectToProvider'])->name('line.login');
 
-Route::get('user/home', function () {
-    return view('user/home');
-})->name('user.home');
+    Route::get('user/home', function () {
+        return view('user/home');
+    })->name('user.home');
 
-// 認証後にリダイレクトされるURL(コールバックURL)
-Route::get('auth/line/callback', [LineOAuthController::class, 'handleProviderCallback']);
+    // 認証後にリダイレクトされるURL(コールバックURL)
+    Route::get('auth/line/callback', [LineOAuthController::class, 'handleProviderCallback']);
+    // 認証後にリダイレクトされるURL(コールバックURL)
+    Route::get('line_bot/link', [LineBotLinkController::class, 'link']);
+
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('user.home');
+
+    // 認証
+    Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
+    Route::post('login', [LoginController::class, 'login']);
+    Route::get('logout', [LoginController::class, 'logout'])->name('logout');
+    Route::post('logout', [LoginController::class, 'logout']);
+});
