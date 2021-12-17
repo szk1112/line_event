@@ -9,6 +9,7 @@ use LINE\LINEBot;
 use LINE\LINEBot\Event\MessageEvent\TextMessage;
 use LINE\LINEBot\Event\PostbackEvent;
 use Illuminate\Routing\Controller as BaseController;
+use LineBot\Usecase\LineBotAccountLinkAction;
 
 class LineBotController extends BaseController
 {
@@ -39,7 +40,14 @@ class LineBotController extends BaseController
                     \App\Events\TextMessageEvent::dispatch($event);
                     break;
                 case $event instanceof LINEBot\Event\FollowEvent:
+                    \App\Events\LineBotFollowEvent::dispatch($event);
+                    break;
                     // 友達登録＆ブロック解除
+                case $event instanceof LINEBot\Event\AccountLinkEvent:
+                    \App\Events\LineBotAccountLinkEvent::dispatch($event);
+//                    $action = app(LineBotAccountLinkAction::class);
+//                    $action->invoke($event);
+                    break;
                 case $event instanceof LINEBot\Event\MessageEvent\LocationMessage:
                     // 位置情報の受信
                 case $event instanceof LINEBot\Event\UnfollowEvent:

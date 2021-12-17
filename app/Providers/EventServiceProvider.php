@@ -2,14 +2,15 @@
 
 namespace App\Providers;
 
-use App\Events\PostBackEvent;
+use App\Events\LineBotAccountLinkEvent;
+use App\Events\LineBotFollowEvent;
 use App\Events\TextMessageEvent;
-use App\Listeners\PostBackListener;
+use App\Listeners\LineBotAccountLinkListener;
+use App\Listeners\LineBotFollowListener;
 use App\Listeners\TextMessageListener;
 use Illuminate\Auth\Events\Registered;
 use Illuminate\Auth\Listeners\SendEmailVerificationNotification;
 use Illuminate\Foundation\Support\Providers\EventServiceProvider as ServiceProvider;
-use Illuminate\Support\Facades\Event;
 
 class EventServiceProvider extends ServiceProvider
 {
@@ -24,6 +25,12 @@ class EventServiceProvider extends ServiceProvider
         ],
         TextMessageEvent::class => [
             TextMessageListener::class,
+        ],
+        LineBotFollowEvent::class => [
+            LineBotFollowListener::class,
+        ],
+        LineBotAccountLinkEvent::class => [
+            LineBotAccountLinkListener::class,
         ],
     ];
 

@@ -24,6 +24,7 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        \URL::forceScheme('https');
         $this->app->bind(LINEBot::class, function () {
             return new LINEBot(
                 new LINEBot\HTTPClient\CurlHTTPClient(config('app.const.Line.LINE_BOT_CHANNEL_ACCESS_TOKEN')),

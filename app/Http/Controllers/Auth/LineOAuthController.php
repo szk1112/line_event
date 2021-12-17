@@ -31,8 +31,9 @@ class LineOAuthController extends Controller
         $this->callbackUrl  = config('line.callback_url');
     }
 
-    public function redirectToProvider()
+    public function redirectToProvider(Request $request)
     {
+        $request->session()->flash('searchId',$request->query('searchId'));;
         $csrfToken = Str::random(32);
         $queryData = [
             'response_type' => 'code',
@@ -40,25 +41,30 @@ class LineOAuthController extends Controller
             'redirect_uri'  => $this->callbackUrl,
             'state'         => $csrfToken,
             'scope'         => 'profile openid',
-            'bot_prompt'    => 'normal',
+            'bot_prompt'    => 'aggressive',
         ];
         $queryStr  = http_build_query($queryData, '', '&');
         return redirect(self::LINE_OAUTH_URI . $queryStr);
     }
 
-    public function handleProviderCallback(Request $request)
+    public function callback(Request $request)
     {
         $code      = $request->query('code');
         $tokenInfo = $this->fetchTokenInfo($code);
         $userInfo  = $this->fetchUserInfo($tokenInfo->access_token);
         //  ログイン処理
         ///
-
-        $response = $this->bot->pushMessage($userInfo->userId, new TextMessageBuilder('ログイン通知'));
+        $response = $this->bot->pushMessage($userInfo->userId, new TextMessageBuilder('ID連携完了しました！'));
         if(!$response->isSucceeded()){
             ///
         }
-        return redirect()->route('user.home')->with(['displayName'=>$userInfo->displayName]);
+        $viewParam = [
+                'displayName'=>$userInfo->displayName ?? '',
+                'userId'=>$userInfo->userId ?? '',
+                'pictureUrl'=>$userInfo->pictureUrl ?? '',
+        ];
+
+        return redirect()->route('line.connect')->with($viewParam);
     }
 
     private function fetchUserInfo($access_token)
