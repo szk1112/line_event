@@ -29,9 +29,9 @@ Route::group(['middleware' => 'web'], function() {
     })->name('user.home');
 
     // 認証後にリダイレクトされるURL(コールバックURL)
-    Route::get('auth/line/callback', [LineOAuthController::class, 'handleProviderCallback']);
+    Route::get('auth/line/callback', [LineOAuthController::class, 'callback']);
     // 認証後にリダイレクトされるURL(コールバックURL)
-    Route::get('line_bot/link', [LineBotLinkController::class, 'link']);
+//    Route::get('line_bot/link', [LineBotLinkController::class, 'link']);
 
     Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('user.home');
 
@@ -40,4 +40,10 @@ Route::group(['middleware' => 'web'], function() {
     Route::post('login', [LoginController::class, 'login']);
     Route::get('logout', [LoginController::class, 'logout'])->name('logout');
     Route::post('logout', [LoginController::class, 'logout']);
+
+    //LINE連携Done
+    Route::get('/line/link/done', function () {
+        return view('line/connect');
+    })->name('line.connect');
+
 });
