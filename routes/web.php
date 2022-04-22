@@ -2,8 +2,6 @@
 
 use App\Http\Controllers\Auth\LineOAuthController;
 use App\Http\Controllers\Auth\LoginController;
-use App\Http\Controllers\LineBot\LineBotLinkController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -21,6 +19,9 @@ Route::group(['middleware' => 'web'], function() {
     Route::get('/', function () {
         return view('welcome');
     })->name('home');
+    Route::get('/privacy', function () {
+        return view('welcome');
+    })->name('privacy');
     // LINEの認証画面に遷移
     Route::get('auth/line', [LineOAuthController::class, 'redirectToProvider'])->name('line.login');
 
@@ -33,7 +34,7 @@ Route::group(['middleware' => 'web'], function() {
     // 認証後にリダイレクトされるURL(コールバックURL)
 //    Route::get('line_bot/link', [LineBotLinkController::class, 'link']);
 
-    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('user.home');
+    Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('my.home');
 
     // 認証
     Route::get('login', [LoginController::class, 'showLoginForm'])->name('login');
