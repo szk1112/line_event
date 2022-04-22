@@ -1,5 +1,5 @@
 FROM node:16-alpine as node
-FROM php:8.0-fpm-alpine
+FROM php:8.1-fpm-alpine
 
 RUN apk upgrade --update \
     && apk --no-cache add icu-dev autoconf make g++ gcc curl libzip-dev
