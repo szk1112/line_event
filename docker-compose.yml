@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: ./docker/nginx/Dockerfile
     ports:
-      - "8000:80"
+      - "8180:80"
     volumes:
       - ./public:/var/www/html:cached
     depends_on:
